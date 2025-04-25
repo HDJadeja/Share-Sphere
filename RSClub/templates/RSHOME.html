@@ -1,0 +1,247 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <style>
+
+        .custom-card {
+            padding: 30px;
+            margin:50px 29px;
+            width:200px;
+            height: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            display: inline-block;
+
+        }
+
+        .custom-card-body {
+            padding: 10px;
+            margin:10px auto;
+        }
+
+        .custom-card .custom-btn {
+            display: none;
+        }
+
+        .custom-card:hover {
+            padding:25px;
+            transform: translateY(-10px);
+        }
+
+        .custom-card:hover img {
+              transform: translate(0px, -40px) scale(1.3);
+        }
+
+        .custom-card:hover .custom-btn {
+            display: block;
+            margin: auto;
+
+        }
+
+        .btn:hover {
+            background-color: #e9e9e9;
+            color: black;
+            border-color: white;
+            font-weight: 600;
+        }
+
+
+        .featured {
+            margin:auto 20px;
+        }
+
+
+        /* niche footer SS logo mate */
+
+    
+
+
+
+
+
+    </style>
+
+</head>
+<body>
+
+{% comment %} nav bar below  {% endcomment %}
+
+<div class="container my-3" style="position:sticky; top:15px; z-index:100; border-radius: 15px; background-color: rgb(255, 255, 255); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);">
+    <nav class="navbar navbar-expand-lg navbar-light ">
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nvc">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nvc">
+            <ul class="navbar-nav d-flex justify-content-center flex-grow-1">
+                <li class="nav-item">
+                    <h1 class="navbar-brand fw-bold" href="#">ShareSphere</h1>
+                </li>
+                <li class="nav-item flex-grow-1 text-center">
+                    <a class="nav-link fw-bold" href="{% url 'SSH' %}">Home</a>
+                </li>
+
+                {% if not request.session.MEMBER_id and not request.session.adminid%}
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'SSH' %}#SSform">Join ShareSphere </a>
+                    </li>
+                {% elif request.session.adminid %}
+                     <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'ss_admin' %}#ADD">ADD product </a>
+                    </li>
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'ss_admin' %}#REM">Remove Product </a>
+                    </li>
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="">Update Product</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'SSH' %}#SSform">Invite Member</a>
+                    </li>
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'show_cart' %}#SSform">Cart</a>
+                    </li>
+                {% endif %}
+
+                <li class="nav-item dropdown flex-grow-1 text-center">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardropdown" data-bs-toggle="dropdown">
+                        Explore Clubs
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbardropdown">
+                        <li><a class="dropdown-item" href="{% url 'homeCCSS' %}">Canvas Collector club</a></li>
+                        <li><a class="dropdown-item" href="{% url 'pmclub' %}">Pearl Mint Club</a></li>
+                        <li><a class="dropdown-item" href="{% url 'SSSSHome' %}">Sapphire Stitch Club</a></li>
+                        <li><a class="dropdown-item" href="{% url 'RSHOME' %}">Relic Seeker's Club</a></li>
+                    </ul>
+                </li>
+
+                {% if request.session.adminid or request.session.MEMBER_id%}
+                <li class="nav-item flex-grow-1 text-center">
+                    <a href={% url "logging_out" %}> <button class="btn btn-dark"> LOG OUT </button> </a>
+                </li>    
+                {% endif %}
+
+            </ul>
+        </div>
+    </nav>
+</div>
+
+{% comment %} ---- nav over -- {% endcomment %}
+
+    
+    <div class="container mt-5" style="position: relative; overflow: hidden;">
+        <img src={% static "Intro.png"%} alt="" class="img-fluid">
+        <img src={% static "INTRO_2.png"%} alt="" class="img-fluid mt-2">
+        <img src={% static "roman.png"%} alt="" class="img-fluid" style="position: absolute; top:70px; left:10%">
+    </div>
+
+    <div class="container my-5">
+        <img src={% static "Ancient.png"%} alt="" class="img-fluid">
+    </div>
+
+  
+
+    <div>
+
+        <marquee behavior="scroll" direction="left">
+            <img src={% static 'vase_1.png'%} class="img-fluid featured" alt="" width="300" height="300" >
+            <img src={% static 'vase_2.png'%} class="img-fluid featured" alt="" width="300" height="300">
+            <img src={% static 'statue_2.png'%} class="img-fluid featured" alt="" width="300" height="300">
+            <img src={% static 'vase_3.png'%} class="img-fluid featured" alt="" width="300" height="300">
+        </marquee>
+
+    </div>
+
+
+<hr>
+    <div class="container d-flex justify-around flex-wrap mt-5 ">
+
+        {% for item in products %}
+        <div class="custom-card">
+            <img src={{ item.product_image.url }} alt="" class="img-fluid"  >
+            <a href="{% url 'cart_add' item.product_id 'RS'  %}" class="btn btn-dark custom-btn">
+                ADD TO CART 
+            </a>
+            <div class="custom-card-body">
+                <p> {{item.product_name }} </p>
+                <p> $ {{item.product_price}} </p>
+                {% if request.session.adminid %}
+                            <p> product id : {{item.product_id }} </p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+
+    <!-- now footer  -->
+
+    <div class="container-fluid p-5" style="background-color: rgb(207, 205, 205);">
+        <hr>
+        <div class="row">
+
+            <div class="col-md-5">
+                <h1 class="text-gradient"> Share - Sphere </h1>
+                <p class="text-dark"> Sharesphere is a unique club-based e-commerce platform that brings together art enthusiasts and collectors to buy, sell, and trade rare and exclusive items. Our mission is to provide a secure, transparent, and community-driven marketplace for the art world. </p>
+               <p class="text-dark">Discover the world of art and collectibles with Sharesphere. Explore our curated selection of rare and exclusive items, and connect with like-minded enthusiasts and collectors.</p>
+            </div>
+
+            <div class="col-md-3">
+
+                <h2 class="text-gradient">Contact Us</h2>
+
+                <p> Call Us : +91 7984062040 </p>
+                <p> Mail Us : hetrajadeja01@gmail.com </p>
+
+                <p>Visit Us:</p>
+                <ul>
+                    <li>Bahnhofstrasse 100, 8001 Zurich, Switzerland</li>
+                    <li>Sweden: Södra Hamngatan 45, 411 06 Göteborg</li>
+                    <li>Norway: Karl Johans gate 45, 0159 Oslo</li>
+                    <li>UK: 123 Oxford St, London W1D 1AT</li>
+                    <li>Germany: Kurfürstendamm 225, 10719 Berlin</li>
+                </ul>
+            </div>
+
+           <div class="col-md-4">
+                <h2 class="text-gradient">Stay Updated</h2>
+                <p>Subscribe to our magazine for exclusive updates on art, collectibles, and more.</p>
+                <form>
+                    <input type="email" placeholder="Enter your email" class="form-control" id="mail"/>
+                    <a class="btn btn-dark mt-2 px-4 py-1" id="subs" onclick="subdone()">Subscribe</a>
+                </form>
+
+                <div id="done" style="visibility: hidden;">
+                    <p class="text-gradient">Thanks for subscribing!</p>
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+
+        const subdone = ()=> {
+            got_mail = document.getElementById("mail").value 
+            if (got_mail) {
+                document.getElementById("done").style.visibility = "visible";
+                document.getElementById("subs").style.visibility = "hidden";
+            }
+        }
+        
+    </script>
+
+    
+</body>
+</html>

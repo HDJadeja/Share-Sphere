@@ -1,0 +1,291 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <style>
+      .img_signup {
+            background-image: url({% static 'JOIN OUR TEAM.png' %});
+            background-size: cover;
+            height: 100vh;
+            width: 50%;
+        }
+
+        @media screen and (max-width:1200px) {
+            .img_signup {
+                width: 50%;
+                height:100vh;
+            }
+        }
+
+        body {
+            background-color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+
+{% comment %} nav bar below  {% endcomment %}
+
+ <div class="container my-3" style="position:sticky; top:15px; z-index:100; border-radius: 15px; background-color: rgb(255, 255, 255); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nvc">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nvc">
+            <ul class="navbar-nav d-flex justify-content-center flex-grow-1">
+                <li class="nav-item">
+                    <h1 class="navbar-brand fw-bold" href="#">ShareSphere</h1>
+                </li>
+                <li class="nav-item flex-grow-1 text-center">
+                    <a class="nav-link fw-bold" href="{% url 'SSH' %}">Home</a>
+                </li>
+
+                {% if not request.session.MEMBER_id and not request.session.adminid%}
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'SSH' %}#SSform">Join ShareSphere </a>
+                    </li>
+                {% elif request.session.adminid %}
+                     <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'ss_admin' %}#ADD">ADD product </a>
+                    </li>
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'ss_admin' %}#REM">Remove Product </a>
+                    </li>
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="">Update Product</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'SSH' %}#SSform">Invite Member</a>
+                    </li>
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'show_cart' %}#SSform">Cart</a>
+                    </li>
+                {% endif %}
+
+                <li class="nav-item dropdown flex-grow-1 text-center">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardropdown" data-bs-toggle="dropdown">
+                        Explore Clubs
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbardropdown">
+                        <li><a class="dropdown-item" href="{% url 'homeCCSS' %}">Canvas Collector club</a></li>
+                        <li><a class="dropdown-item" href="{% url 'pmclub' %}">Pearl Mint Club</a></li>
+                        <li><a class="dropdown-item" href="{% url 'SSSSHome' %}">Sapphire Stitch Club</a></li>
+                        <li><a class="dropdown-item" href="{% url 'RSHOME' %}">Relic Seeker's Club</a></li>
+                    </ul>
+                </li>
+
+                {% if request.session.adminid %}
+                <li class="nav-item flex-grow-1 text-center">
+                    <a href={% url "logging_out" %}> <button class="btn btn-dark"> LOG OUT </button> </a>
+                </li>    
+
+                {% endif %}
+
+            </ul>
+        </div>
+    </nav>
+</div>
+
+{% comment %} ---- nav over -- {% endcomment %}
+
+{% if not request.session.adminid %}
+    <div class='row' style="height:100px;">
+        <div class='col-3 my-auto d-block mx-auto' >
+            <form method='post'>
+                {% csrf_token %}
+                {% comment %}aanu full form is  cross-Site Request Forgery {% endcomment %}
+
+                {%if Got_error %}
+                    <h1> {{Got_error}} </h1>
+                {%endif%}
+
+        
+            
+            
+            <div class="mb-3">
+                <label for="SSkey" class="form-label">SS Key</label>
+                <input type="number" class="form-control" id="SSkey" name="SSkey" required>
+            </div>
+            <div class="mb-3">
+                <label for="uname" class="form-label">Username</label>
+                <input type="text" class="form-control" id="uname" name="uname" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </form>
+    </div>
+
+    <div class='col-8 img_signup' style=''>
+        {% comment %} image as background {% endcomment %}
+    </div>
+
+</div>
+
+{% else %}
+
+<h1 class="text-center p-5 bg-dark text-white"> SHARE-SPHERE AND CO. </h1>
+
+<div class="container bg-primary rounded rounded-5 p-5 my-5" id="ADD">
+    <form action="#" class="text-white" method="post" enctype="multipart/form-data">
+      <h5> ADD PRODUCT To PEARL MINT CLUB  </h5>,
+         {% csrf_token %}
+        <label for="product_id" class="form-label">Product ID:</label>
+        <input type="text" name="product_id" id="product_id" class="form-control mb-4"/>
+
+        <label for="product_name" class="form-label">Product Name:</label>
+        <input type="text" name="product_name" id="product_name" class="form-control mb-4"/>
+
+
+        <label for="product_price" class="form-label">Product Price:</label>
+        <input type="number" name="product_price" id="product_price" class="form-control mb-4"/>
+
+
+        <label for="product_monarch" class="form-label">Product Monarch:</label>
+        <input type="text" name="product_monarch" id="product_monarch" class="form-control mb-4"/>
+
+
+        <label for="product_image" class="form-label">Product Image:</label>
+        <input type="file" name="product_image" id="product_image" class="form-control mb-4" accept="image/*"/>
+
+        <label for="product_country" class="form-label">Product Country:</label>
+        <input type="text" name="product_country" id="product_country" class="form-control mb-4"/>
+
+        <input type="submit" name="submit_mode" value="Add_PM" class="btn btn-dark"/>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+
+    </form>
+</div>
+
+<div class="container bg-primary rounded rounded-5 p-5 my-5">
+    <form action="#" class="text-white mt-5" method="post" enctype="multipart/form-data" >
+      <h5> ADD PRODUCT To  CANVAS COLLECTOR CLUB  </h5>
+      {% csrf_token %}
+        <label for="product_id" class="form-label">Product ID:</label>
+        <input type="text" name="product_id" id="product_id" class="form-control mb-4"/>
+
+        <label for="art_description" class="form-label">Art Description:</label>
+        <input type="text" name="art_description" id="art_description" class="form-control mb-4"/>
+
+        <label for="art_title" class="form-label">Art Title:</label>
+        <input type="text" name="art_title" id="art_title" class="form-control mb-4"/>
+
+        <label for="art_price" class="form-label">Art Price:</label>
+        <input type="number" name="art_price" id="art_price" class="form-control mb-4"/>
+
+        <label for="artist_name" class="form-label">Artist Name:</label>
+        <input type="text" name="artist_name" id="artist_name" class="form-control mb-4"/>
+
+        <label for="art_img" class="form-label">Art Image:</label>
+        <input type="file" name="art_img" id="art_img" class="form-control mb-4" accept="image/*"/>
+        
+        <input type="submit" name="submit_mode" value="Add_CC" class="btn btn-dark"/>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+
+    </form>
+</div>
+
+<div class="container bg-primary my-5 rounded rounded-5 p-5">
+    <form action="#" class="text-white mt-5"  method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+      <h5> ADD PRODUCT To SAPPHIRE STICH CLUB  </h5>
+
+     <label for="product_id" class="form-label">Product ID:</label>
+     <input type="text" name="product_id" id="product_id" class="form-control mb-4"/>
+         
+     <label for="product_name" class="form-label">Product Name:</label>
+     <input type="text" name="product_name" id="product_name" class="form-control mb-4"/>
+         
+     <label for="product_price" class="form-label">Product Price:</label>
+     <input type="number" name="product_price" id="product_price" class="form-control mb-4"/>
+         
+     <label for="product_artist" class="form-label">Product Artist:</label>
+     <input type="text" name="product_artist" id="product_artist" class="form-control mb-4"/>
+         
+     <label for="product_image" class="form-label">Product Image:</label>
+     <input type="file" name="product_image" id="product_image" class="form-control mb-4" accept="image/*"/>
+
+     <button type="submit" name="submit_mode" value="Add_SS" class="btn btn-dark">Submit</button>
+    <button type="reset" class="btn btn-secondary">Reset</button>
+         
+    </form>
+</div>
+
+<div class="container bg-primary my-5 rounded rounded-5 p-5">
+    <form action="#" class="text-white mt-5"  method="post" enctype="multipart/form-data" >
+        {% csrf_token %}
+      <h5> ADD PRODUCT To Relic Seekers Club  </h5>
+
+     <label for="product_id" class="form-label">Product ID:</label>
+     <input type="text" name="product_id" id="product_id" class="form-control mb-4"/>
+         
+     <label for="product_name" class="form-label">Product Name:</label>
+     <input type="text" name="product_name" id="product_name" class="form-control mb-4"/>
+         
+     <label for="product_price" class="form-label">Product Price:</label>
+     <input type="number" name="product_price" id="product_price" class="form-control mb-4"/>
+         
+     <label for="product_image" class="form-label">Product Image:</label>
+     <input type="file" name="product_image" id="product_image" class="form-control mb-4" accept="image/*"/>
+
+    <input type="submit" name="submit_mode" value="Add_RS" class="btn btn-dark"/>
+    <button type="reset" class="btn btn-secondary">Reset</button>
+         
+    </form>
+</div>
+
+<div class="container bg-primary my-5 rounded rounded-5 p-5"  id="REM">
+    <form action="#" class="text-white mt-5" method="post" >
+      <h5> REMOVE PRODUCT FROM CANVAS COLLECTOR CLUB </h5>
+
+      {% csrf_token %}
+     <label for="product_id" class="form-label">Product ID:</label>
+     <input type="number" name="product_id" id="product_id" class="form-control mb-4"/>
+             
+     <button type="submit" name="submit_mode" value="R_CC" class="btn btn-dark">Remove</button>
+     <button type="reset" class="btn btn-secondary">Reset</button>
+    </form>
+
+    <form action="#" class="text-white mt-5" method="post" >
+      <h5> REMOVE PRODUCT FROM Relic Seeker's CLUB </h5>
+
+      {% csrf_token %}
+     <label for="product_id" class="form-label">Product ID:</label>
+     <input type="number" name="product_id" id="product_id" class="form-control mb-4"/>
+             
+     <button type="submit" name="submit_mode" value="R_RS" class="btn btn-dark">Remove</button>
+     <button type="reset" class="btn btn-secondary">Reset</button>
+    </form>
+
+    <form action="#" class="text-white mt-5" method="post">
+     <h5> REMOVE PRODUCT FROM SAPPHIRE STICH CLUB </h5>
+     {% csrf_token %}
+     <label for="product_id" class="form-label">Product ID:</label>
+     <input type="number" name="product_id" id="product_id" class="form-control mb-4"/>
+    
+     <button type="submit" name="submit_mode" value="R_SS" class="btn btn-dark">Remove</button>
+     <button type="reset" class="btn btn-secondary">Reset</button>
+    </form>
+
+    <form action="#" class="text-white mt-5" method="post" >
+      <h5> REMOVE PRODUCT FROM PEARL MINT CLUB </h5>
+      {% csrf_token %}
+     <label for="product_id" class="form-label">Product ID:</label>
+     <input type="number" name="product_id" id="product_id" class="form-control mb-4"/>
+    
+     <button type="submit" name="submit_mode" value="R_PM" class="btn btn-dark">REMOVE</button>
+     <button type="reset" class="btn btn-secondary">Reset</button>
+
+    </form>
+    
+</div>
+
+{%endif%}
+
+
+</body>
+</html>

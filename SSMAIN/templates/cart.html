@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+
+    <style>
+    
+        body {
+            background-color: azure;
+        }
+
+        #cart {
+            margin-left: 10px;
+        }
+
+        @media screen and (max-width: 768px) {
+            #cart {
+                margin-left: 0;
+            }
+        }
+
+        .text-gradient {
+             font-weight: 800;
+             font-size: 100px;
+   			 background: linear-gradient(to right, rgb(99, 99, 255), rgb(208, 90, 255),red , rgb(145, 157, 253)); 
+   			 color: transparent; 
+    		 background-clip: text; 
+             background-size: 400% 400%;
+             animation: gradient 15s ease infinite;
+  		}
+        
+
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        
+    </style>
+</head>
+
+<body>
+
+{% comment %} nav bar below  {% endcomment %}
+
+<div class="container my-3" style="position:sticky; top:15px; z-index:100; border-radius: 15px; background-color: rgb(255, 255, 255); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nvc">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nvc">
+            <ul class="navbar-nav d-flex justify-content-center flex-grow-1">
+                <li class="nav-item">
+                    <h1 class="navbar-brand fw-bold" href="#">ShareSphere</h1>
+                </li>
+                <li class="nav-item flex-grow-1 text-center">
+                    <a class="nav-link fw-bold" href="{% url 'SSH' %}">Home</a>
+                </li>
+
+                {% if not request.session.MEMBER_id and not request.session.adminid%}
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'SSH' %}#SSform">Join ShareSphere </a>
+                    </li>
+                {% elif request.session.adminid %}
+                     <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'ss_admin' %}#ADD">ADD product </a>
+                    </li>
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'ss_admin' %}#REM">Remove Product </a>
+                    </li>
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="">Update Product</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'SSH' %}#SSform">Invite Member</a>
+                    </li>
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'show_cart' %}#SSform">Cart</a>
+                    </li>
+                {% endif %}
+
+                <li class="nav-item dropdown flex-grow-1 text-center">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardropdown" data-bs-toggle="dropdown">
+                        Explore Clubs
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'homeCCSS' %}">Canvas Collector club</a></li>
+                        <li><a class="dropdown-item" href="{% url 'pmclub' %}">Pearl Mint Club</a></li>
+                        <li><a class="dropdown-item" href="{% url 'SSSSHome' %}">Sapphire Stitch Club</a></li>
+                        <li><a class="dropdown-item" href="{% url 'RSHOME' %}">Relic Seeker's Club</a></li>
+                    </ul>
+                </li>
+
+                {% if request.session.adminid %}
+                <li class="nav-item flex-grow-1 text-center">
+                    <a href={% url "logging_out" %}> <button class="btn btn-dark"> LOG OUT </button> </a>
+                </li>    
+
+                {% endif %}
+
+            </ul>
+        </div>
+    </nav>
+</div>
+
+{% comment %} ---- nav over -- {% endcomment %}
+
+<h1 class="text-center mt-5 text-gradient"> ShareSphere  </h1>
+<div class="d-flex justify-content-around flex-wrap" id="cart">
+
+    <div class="mt-5" style="border-radius: 20px;">
+
+      <table cellpadding="40px">
+            <tr>
+                <th>Product</th>
+                <th>Name</th>
+                <th>Community Charge</th>
+                <th>Price</th>
+                <th> Combined Price</th>
+                <th></th>
+            </tr>
+
+            {% for i in cart %}
+                <tr>
+                    <td><img src={{ i.product_img }} alt="" width="100px" height="100px" style="border-radius: 20px;"></td>
+                    <td>{{ i.product_name }}</td>
+                    <td>{{ i.club_charge }}</td>
+                    <td>{{ i.product_price }}</td>
+                    <td>{{ i.club_charge|add:i.product_price  }}</td>
+                    <form action={% url 'remove_cart' %} method="post">
+                        {% csrf_token %}
+                        <input type="text" hidden value="{{ i.product_name }}" name="p_name"/>
+                        <td><button class="btn btn-danger btn-sm" name="rem" type="submit">&times;</button></td>
+                    </form>
+                </tr>
+            {% endfor %}
+            
+
+        </table>
+
+    </div>
+
+    <div class="p-5" style="border-radius: 20px; background-image: linear-gradient(to top right , rgba(228, 229, 235, 0.86) , rgba(169, 170, 176, 0.86));" >
+        <h1> Summary </h1>
+        <hr>
+        <p> Total Item: {{ Item_total }} </p>
+        <p>Product Total : ${{total_amount}} </p>
+        <p> Shipping Total : $1200 </p>
+        <hr>
+        <p> Total : ${{total_amount|add:1200}} </p>
+
+        <p> HERE BY YOU ACCEPT OUR </br> TERM'S AND CONDITION <br> GIVEN BELOW </p>
+        <button class="btn btn-dark"> Go To Checkout </button>
+    </div>
+
+    <div class="container my-5 p-5" style="background-color:grey; color:white; border-radius:20px;">
+        <h2 class="text-center mb-5">Terms and Conditions for ShareSphere</h2>
+        <p>Welcome to ShareSphere! These Terms and Conditions ("Terms") govern your use of our club-based eCommerce website. By accessing or using ShareSphere, you agree to comply with and be bound by these Terms. Please read them carefully.</p>
+    
+        <h3>1. General Information</h3>
+        <p><strong>1.1 Acceptance of Terms:</strong> By using ShareSphere, you confirm that you are at least 18 years old or have the consent of a legal guardian to use our services. If you do not agree to these Terms, you must not use our website.</p>
+        <p><strong>1.2 Changes to Terms:</strong> We reserve the right to update or modify these Terms at any time without prior notice. Any changes will be effective immediately upon posting. Continued use of the website after changes constitutes acceptance of the revised Terms.</p>
+    
+        <h3>2. Membership and Account</h3>
+        <p><strong>2.1 Membership Eligibility:</strong> ShareSphere is a club-based platform. To access certain features, you may need to register for a membership. Membership eligibility may vary based on location and other criteria.</p>
+        <p><strong>2.2 Account Responsibility:</strong> You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. Notify us immediately of any unauthorized use.</p>
+    
+        <h3>3. Purchases and Payments</h3>
+        <p><strong>3.1 Product Information:</strong> We strive to ensure that all product descriptions, pricing, and availability are accurate. However, errors may occur, and we reserve the right to correct them without prior notice.</p>
+        <p><strong>3.2 Payment Terms:</strong> All payments must be made through the payment methods provided on our website. By completing a purchase, you agree to pay the total amount, including applicable taxes and shipping fees.</p>
+        <p><strong>3.3 Refunds and Returns:</strong> Refunds and returns are subject to our Refund Policy, which can be found in Invitation Card. Please review it before making a purchase.</p>
+    
+        <h3>4. User Conduct</h3>
+        <p><strong>4.1 Prohibited Activities:</strong> You agree not to use the website for illegal purposes, interfere with the website's functionality or security, or post harmful, offensive, or misleading content.</p>
+        <p><strong>4.2 Termination of Access:</strong> We reserve the right to suspend or terminate your access to ShareSphere if you violate these Terms.</p>
+    
+        <h3>5. Intellectual Property</h3>
+        <p><strong>5.1 Ownership:</strong> All content on ShareSphere, including text, images, logos, and software, is the property of ShareSphere or its licensors and is protected by intellectual property laws.</p>
+        <p><strong>5.2 Limited License:</strong> You are granted a limited, non-exclusive, and non-transferable license to access and use the website for personal, non-commercial purposes.</p>
+    
+        <h3>6. Limitation of Liability</h3>
+        <p>To the fullest extent permitted by law, ShareSphere shall not be liable for any indirect, incidental, or consequential damages arising from your use of the website or inability to use it.</p>
+    
+        <h3>7. Governing Law</h3>
+        <p>These Terms are governed by the laws of [Your Jurisdiction]. Any disputes arising from these Terms will be resolved in the courts of [Your Jurisdiction].</p>
+    
+        <h3>8. Contact Information</h3>
+        <p>If you have any questions or concerns about these Terms, please contact us at:</p>
+        <p>Phone: 93908123 </p>
+    
+        <h3>9. Miscellaneous</h3>
+        <p><strong>9.1 Severability:</strong> If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions will remain in full force and effect.</p>
+        <p><strong>9.2 Entire Agreement:</strong> These Terms constitute the entire agreement between you and ShareSphere regarding your use of the website.</p>
+    </div>
+
+    <!-- now footer  -->
+
+    <div class="container-fluid p-5" style="background-color: rgb(207, 205, 205);">
+        <hr>
+        <div class="row">
+
+            <div class="col-md-5">
+                <h1 class="text-dark"> Share - Sphere </h1>
+                <p class="text-dark"> Sharesphere is a unique club-based e-commerce platform that brings together art enthusiasts and collectors to buy, sell, and trade rare and exclusive items. Our mission is to provide a secure, transparent, and community-driven marketplace for the art world. </p>
+               <p class="text-dark">Discover the world of art and collectibles with Sharesphere. Explore our curated selection of rare and exclusive items, and connect with like-minded enthusiasts and collectors.</p>
+            </div>
+
+            <div class="col-md-3">
+
+                <h2 class="text-dark">Contact Us</h2>
+
+                <p> Call Us : +91 7984062040 </p>
+                <p> Mail Us : hetrajadeja01@gmail.com </p>
+
+                <p>Visit Us:</p>
+                <ul>
+                    <li>Bahnhofstrasse 100, 8001 Zurich, Switzerland</li>
+                    <li>Sweden: Södra Hamngatan 45, 411 06 Göteborg</li>
+                    <li>Norway: Karl Johans gate 45, 0159 Oslo</li>
+                    <li>UK: 123 Oxford St, London W1D 1AT</li>
+                    <li>Germany: Kurfürstendamm 225, 10719 Berlin</li>
+                </ul>
+            </div>
+
+           <div class="col-md-4">
+                <h2 class="text-dark">Stay Updated</h2>
+                <p>Subscribe to our magazine for exclusive updates on art, collectibles, and more.</p>
+                <form>
+                    <input type="email" placeholder="Enter your email" class="form-control" id="mail"/>
+                    <a class="btn btn-dark mt-2 px-4 py-1" id="subs" onclick="subdone()">Subscribe</a>
+                </form>
+
+                <div id="done" style="visibility: hidden;">
+                    <p class="text-dark">Thanks for subscribing!</p>
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+
+        const subdone = ()=> {
+            got_mail = document.getElementById("mail").value 
+            if (got_mail) {
+                document.getElementById("done").style.visibility = "visible";
+                document.getElementById("subs").style.visibility = "hidden";
+            }
+        }
+        
+    </script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,320 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <style>
+
+        .carousel-item>img {
+            width: 100%;
+            height: auto;
+        }
+
+
+        body {
+             background-color: rgb(214, 235, 253); 
+        }
+
+        
+        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+
+        
+
+       .lora-font {
+         font-family: "Lora", serif;
+         font-optical-sizing: auto;
+         font-weight: 600;
+         font-style: normal;
+       }
+
+       .sidecoral_left {
+            position: absolute;
+            left:0px;
+            top:10px;
+            width:auto;
+            height:100%;
+            visibility: visible;
+        }
+        
+        .sidecoral_right {
+            position: absolute;
+            right:0px;
+            top:10px;
+            width:auto;
+            height:100%;
+            visibility: visible;
+       }
+
+       @media screen and (max-width:800px) {
+        .sidecoral_left,.sidecoral_right {
+            visibility: hidden;
+        }
+       }
+
+
+       .carousel-item>img {
+        border-radius: 50px;
+       }
+
+       li {
+        margin-left:30px;
+       }
+
+       @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+    </style>
+</head>
+<body class="lora-font">
+    
+{% comment %} nav bar below  {% endcomment %}
+
+<div class="container my-3" style="position:sticky; top:15px; z-index:100; border-radius: 15px; background-image:linear-gradient(to right,rgb(173, 173, 234),rgb(125, 117, 218)); animation: gradient 15s ease infinite; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nvc">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nvc">
+            <ul class="navbar-nav d-flex justify-content-center flex-grow-1">
+                <li class="nav-item">
+                    <h1 class="navbar-brand fw-bold" href="#">ShareSphere</h1>
+                </li>
+                <li class="nav-item flex-grow-1 text-center">
+                    <a class="nav-link fw-bold" href="{% url 'SSH' %}">Home</a>
+                </li>
+
+                {% if not request.session.MEMBER_id and not request.session.adminid%}
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'SSH' %}#SSform">Join ShareSphere </a>
+                    </li>
+                {% elif request.session.adminid %}
+                     <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'ss_admin' %}#ADD">ADD product </a>
+                    </li>
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'ss_admin' %}#REM">Remove Product </a>
+                    </li>
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="">Update Product</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'SSH' %}#SSform">Invite Member</a>
+                    </li>
+                    <li class="nav-item flex-grow-1 text-center">
+                        <a class="nav-link fw-bold" href="{% url 'show_cart' %}#SSform">Cart</a>
+                    </li>
+
+                {% endif %}
+
+                <li class="nav-item dropdown flex-grow-1 text-center">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardropdown" data-bs-toggle="dropdown">
+                        Explore Clubs
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbardropdown">
+                        <li><a class="dropdown-item" href="{% url 'homeCCSS' %}">Canvas Collector club</a></li>
+                        <li><a class="dropdown-item" href="{% url 'pmclub' %}">Pearl Mint Club</a></li>
+                        <li><a class="dropdown-item" href="{% url 'SSSSHome' %}">Sapphire Stitch Club</a></li>
+                        <li><a class="dropdown-item" href="{% url 'RSHOME' %}">Relic Seeker's Club</a></li>
+                    </ul>
+                </li>
+
+                {% if request.session.adminid %}
+                <li class="nav-item flex-grow-1 text-center">
+                    <a href={% url "logging_out" %}> <button class="btn btn-dark"> LOG OUT </button> </a>
+                </li>    
+
+                {% endif %}
+
+            </ul>
+        </div>
+    </nav>
+</div>
+
+{% comment %} ---- nav over -- {% endcomment %}
+
+    <div class="container-fluid " style="position: relative;" >
+        <div class="text-center mx-auto d-block mt-5 ">
+            <p> Share Sphere's </p>
+            <h1 class="display-1"> Canvas Collector Club </h1>
+            <p> Where Pearl Of Art Is Made </p>
+        </div>
+        <img src={% static 'pearlsscc.png' %} class=" mx-auto d-block" alt="" style="width:50%; height: auto;">
+        <img src={% static 'side_coral_right.png' %} class="sidecoral_right" alt="">
+        <img src={% static 'side_coral_left.png' %} class="sidecoral_left" alt="" >
+    </div>
+
+    <div class="container" style="margin-top: 40px;">
+        <hr style="height: 3px;"/>
+        <h1 class="text-center lora-font" style="font-weight: 300;"> Gallery of their notable works </h1>
+        <div class="carousel carousel-dark slide mt-5"  id="ss_ss" data-bs-ride="carousel" data-bs-interval="3000">
+
+            <div class="carousel-inner ">
+                
+                <div class="carousel-item active">
+                    <img src={% static 'ART_cheetah.jpg' %} alt="artbySS" >
+                    <hr style="height: 3px;"/>
+                    <div class="mt-2 text-center">
+                        <h1 class="text-secondary fw-bold text-dark"> LET MY PEOPLE GO  </h1>
+                        <p class="text-secondary fw-bold text-dark"> 
+                            A breathtaking painting of the Vijay Vilas Palace stands proudly,
+                            capturing the architectural elegance of this grand structure.
+                            The palace is bathed in the warm golden hues of a setting sun, which casts a 
+                            magical glow on its intricate carvings and delicate jharokhas (balconies). 
+                            The vibrant colors of the sky—orange, pink, and purple—blend seamlessly, creating a perfect backdrop for this regal edifice.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src={% static 'KARTSS.jpg' %} alt="artbySS" >
+                    <hr style="height: 3px;"/>
+                    <div class="mt-2 text-center">
+                        <h1 class="text-secondary fw-bold text-dark"> LET MY PEOPLE GO  </h1>
+                        <p class="text-secondary fw-bold text-dark"> 
+                            A breathtaking painting of the Vijay Vilas Palace stands proudly,
+                            capturing the architectural elegance of this grand structure.
+                            The palace is bathed in the warm golden hues of a setting sun, which casts a 
+                            magical glow on its intricate carvings and delicate jharokhas (balconies). 
+                            The vibrant colors of the sky—orange, pink, and purple—blend seamlessly, creating a perfect backdrop for this regal edifice.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src={% static 'ART_HORSE.jpg' %} alt="artbySS" >
+                    <hr style="height: 3px;"/>
+                    <div class="mt-2 text-center">
+                        <h1 class="text-secondary fw-bold text-dark"> LET MY PEOPLE GO  </h1>
+                        <p class="text-secondary fw-bold text-dark"> 
+                            A breathtaking painting of the Vijay Vilas Palace stands proudly,
+                            capturing the architectural elegance of this grand structure.
+                            The palace is bathed in the warm golden hues of a setting sun, which casts a 
+                            magical glow on its intricate carvings and delicate jharokhas (balconies). 
+                            The vibrant colors of the sky—orange, pink, and purple—blend seamlessly, creating a perfect backdrop for this regal edifice.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="carousel-control-prev" data-bs-target="#ss_ss" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" style="background-color:rgba(0, 0, 0, 1); border-radius: 10px;"></span>
+            </button>
+            <button class="carousel-control-next" data-bs-target="#ss_ss" data-bs-slide="next">
+                <span class="carousel-control-next-icon" style="background-color:rgba(0, 0, 0, 1); border-radius: 10px;"></span>
+            </button>
+
+        </div>
+        <hr style="height: 3px;"/>
+    </div>
+    
+
+ 
+    <!-- card design  -->
+
+<div class="container d-flex flex-wrap justify-content-around">
+    {% for product in products %}
+        <div class="card my-5" style="width: 800px; border-radius: 20px; overflow: hidden;">
+            <div class="row">
+
+                <div class="col-md-7">
+                  <img src={{ product.art_img.url }} alt="" style="width: 100%; height: 100%;">
+                </div>
+
+                <div class="col-md-5">
+                    <div class="card-body p-4">
+                        <h1> {{product.art_title}} </h1>
+                        <p>{{product.art_description}}</p>
+                        <p> By {{product.artist_name}} </p>
+                        <p> Evaluation ${{product.art_price}} </p>
+                        {% if request.session.adminid %}
+                            <p> product id : {{product.product_id }} </p>
+                        {% endif %}
+                        <a href="{% url 'cart_add' product.product_id 'CC'  %}"  class="btn btn-outline-secondary"> ADD TO CART </a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+<!-- now footer  -->
+
+<div class="container-fluid p-5" style="background-color: rgb(207, 205, 205);">
+    <hr>
+    <div class="row">
+
+        <div class="col-md-5">
+            <h1 class="text-gradient"> Share - Sphere </h1>
+            <p class="text-dark"> Sharesphere is a unique club-based e-commerce platform that brings together art enthusiasts and collectors to buy, sell, and trade rare and exclusive items. Our mission is to provide a secure, transparent, and community-driven marketplace for the art world. </p>
+           <p class="text-dark">Discover the world of art and collectibles with Sharesphere. Explore our curated selection of rare and exclusive items, and connect with like-minded enthusiasts and collectors.</p>
+        </div>
+
+        <div class="col-md-3">
+
+            <h2 class="text-gradient">Contact Us</h2>
+
+            <p> Call Us : +91 7984062040 </p>
+            <p> Mail Us : hetrajadeja01@gmail.com </p>
+
+            <p>Visit Us:</p>
+            <ul>
+                <li>Bahnhofstrasse 100, 8001 Zurich, Switzerland</li>
+                <li>Sweden: Södra Hamngatan 45, 411 06 Göteborg</li>
+                <li>Norway: Karl Johans gate 45, 0159 Oslo</li>
+                <li>UK: 123 Oxford St, London W1D 1AT</li>
+                <li>Germany: Kurfürstendamm 225, 10719 Berlin</li>
+            </ul>
+        </div>
+
+       <div class="col-md-4">
+            <h2 class="text-gradient">Stay Updated</h2>
+            <p>Subscribe to our magazine for exclusive updates on art, collectibles, and more.</p>
+            <form>
+                <input type="email" placeholder="Enter your email" class="form-control" id="mail"/>
+                <a class="btn btn-dark mt-2 px-4 py-1" id="subs" onclick="subdone()">Subscribe</a>
+            </form>
+
+            <div id="done" style="visibility: hidden;">
+                <p class="text-gradient">Thanks for subscribing!</p>
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+<script>
+
+    const subdone = ()=> {
+        got_mail = document.getElementById("mail").value 
+        if (got_mail) {
+            document.getElementById("done").style.visibility = "visible";
+            document.getElementById("subs").style.visibility = "hidden";
+        }
+    }
+    
+</script>
+
+</body>
+</html>
+

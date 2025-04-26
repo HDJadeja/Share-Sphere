@@ -32,3 +32,33 @@ Sharesphere is a club-based e-commerce platform where users join exclusive clubs
 
 ![Image](https://github.com/user-attachments/assets/396e2f1e-e1a0-4160-9758-cea5eb5a8a14)
 
+
+---
+
+## Running the Project
+
+To run the project locally, follow these steps:
+
+1. Create a virtual environment named `env`:
+   ```bash
+   python -m venv env
+   ```
+
+2. Activate the virtual environment:
+   - On Windows:
+     ```bash
+     .\env\Scripts\activate
+     ```
+   - On macOS/Linux:
+     ```bash
+     source env/bin/activate
+     ```
+
+3. Run the Django development server:
+   ```bash
+   python manage.py runserver
+   ```
+
+
+
+

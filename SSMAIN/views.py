@@ -20,7 +20,7 @@ def generate_id(mode=""):
 
 def Home(request):
     error=""
-
+    
     if request.POST and request.session.get('MEMBER_id') is None:
         invitation_id = request.POST['invite_id']
         inviter_username = request.POST['invite_username']
@@ -161,45 +161,57 @@ def adminlog_in(request):
 
 def add_in_cart(request,product_id,club):
 
-    cart = linked_list().deserialize(list(request.session["CART"]))
-    if club == "PM" and product_PMclub.objects.filter(product_id=product_id).exists():
-        product = product_PMclub.objects.get(product_id=product_id)
-        cart.add_product(str(product.product_image.url),product.product_name,900,float(product.product_price))
+    try:
+        cart = linked_list().deserialize(list(request.session["CART"]))
+        
+        if club == "PM" and product_PMclub.objects.filter(product_id=product_id).exists():
+            product = product_PMclub.objects.get(product_id=product_id)
+            cart.add_product(str(product.product_image.url),product.product_name,900,float(product.product_price))
 
-    elif club == "CC" and product_CCClub.objects.filter(product_id=product_id).exists():
-        product = product_CCClub.objects.get(product_id=product_id)
-        print(str(product.art_img.url))
-        cart.add_product(str(product.art_img.url),product.art_title,900,float(product.art_price))
+        elif club == "CC" and product_CCClub.objects.filter(product_id=product_id).exists():
+            product = product_CCClub.objects.get(product_id=product_id)
+            print(str(product.art_img.url))
+            cart.add_product(str(product.art_img.url),product.art_title,900,float(product.art_price))
 
-    elif club == "SS" and SSSS_products.objects.filter(product_id=product_id).exists():
-        product = SSSS_products.objects.get(product_id=product_id)
-        cart.add_product(str(product.product_image.url),product.product_name,2200,float(product.product_price))
+        elif club == "SS" and SSSS_products.objects.filter(product_id=product_id).exists():
+            product = SSSS_products.objects.get(product_id=product_id)
+            cart.add_product(str(product.product_image.url),product.product_name,2200,float(product.product_price))
 
-    elif club == "RS" and product_RSclub.objects.filter(product_id=product_id).exists():
-        product = product_RSclub.objects.get(product_id=product_id)
-        cart.add_product(str(product.product_image.url),product.product_name,2200,float(product.product_price))
+        elif club == "RS" and product_RSclub.objects.filter(product_id=product_id).exists():
+            product = product_RSclub.objects.get(product_id=product_id)
+            cart.add_product(str(product.product_image.url),product.product_name,2200,float(product.product_price))
 
-    request.session["CART"] = cart.serialize()
-    return show_cart(request)
+        request.session["CART"] = cart.serialize()
+        return show_cart(request)
+    except:
+        return redirect("/#SSform")
+    
     
 def show_cart(request):
-    cart = list(request.session["CART"])
-    totals = sum([item['product_price']+item['club_charge'] for item in cart])
-    return render(request,"cart.html",context={'cart':cart,'total_amount':totals,'Item_total':len(cart)})
+    try:
+        cart = list(request.session["CART"])
+        totals = sum([item['product_price']+item['club_charge'] for item in cart])
+        return render(request,"cart.html",context={'cart':cart,'total_amount':totals,'Item_total':len(cart)})
+    except:
+        return redirect("/#SSform")
 
 def remove_from_cart(request):
 
     if request.POST:
         product_name = request.POST["p_name"]
-        cart = list(request.session["CART"])
+        try:
+            cart = list(request.session["CART"])
 
-        for items in cart:
-            print(" looping ",product_name)
-            if items['product_name'] == product_name:
-                cart.remove(items)
-                print(" malyu remove amte ")
-                break
+            for items in cart:
+                print(" looping ",product_name)
+                if items['product_name'] == product_name:
+                    cart.remove(items)
+                    print(" malyu remove amte ")
+                    break
 
-        request.session["CART"] = cart
+            request.session["CART"] = cart
+        except:
+            return redirect("/#SSform")
         
     return show_cart(request)
+

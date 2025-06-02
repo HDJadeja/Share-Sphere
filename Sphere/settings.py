@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-(*j4x&ge^$evnfzl&b2^c_y4_mzg_xmm!-8ysib9i30@==+ip1
 DEBUG = False
 
 
-ALLOWED_HOSTS = ['Share-Sphere-jade.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

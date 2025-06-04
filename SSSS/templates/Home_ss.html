@@ -112,10 +112,63 @@
 
     {% endfor %}
 
-    <div class="container-fluid bg-dark mt-5 text-center text-white" height="100px" width="1000px">
-       <h1> Share Sphere & Co. &copy; </h1>
-       <!-- and more  -->
+    
+    <div class="container-fluid p-5 mt-5" style="background-color: rgb(207, 205, 205);">
+        <hr>
+        <div class="row">
+
+            <div class="col-md-5">
+                <h1 class="text-gradient"> Share - Sphere </h1>
+                <p class="text-dark"> Sharesphere is a unique club-based e-commerce platform that brings together art enthusiasts and collectors to buy, sell, and trade rare and exclusive items. Our mission is to provide a secure, transparent, and community-driven marketplace for the art world. </p>
+               <p class="text-dark">Discover the world of art and collectibles with Sharesphere. Explore our curated selection of rare and exclusive items, and connect with like-minded enthusiasts and collectors.</p>
+            </div>
+
+            <div class="col-md-3">
+
+                <h2 class="text-gradient">Contact Us</h2>
+
+                <p> Call Us : +91 7984062040 </p>
+                <p> Mail Us : hetrajadeja01@gmail.com </p>
+
+                <p>Visit Us:</p>
+                <ul>
+                    <li>Bahnhofstrasse 100, 8001 Zurich, Switzerland</li>
+                    <li>Sweden: Södra Hamngatan 45, 411 06 Göteborg</li>
+                    <li>Norway: Karl Johans gate 45, 0159 Oslo</li>
+                    <li>UK: 123 Oxford St, London W1D 1AT</li>
+                    <li>Germany: Kurfürstendamm 225, 10719 Berlin</li>
+                </ul>
+            </div>
+
+           <div class="col-md-4">
+                <h2 class="text-gradient">Stay Updated</h2>
+                <p>Subscribe to our magazine for exclusive updates on art, collectibles, and more.</p>
+                <form>
+                    <input type="email" placeholder="Enter your email" class="form-control" id="mail"/>
+                    <a class="btn btn-dark mt-2 px-4 py-1" id="subs" onclick="subdone()">Subscribe</a>
+                </form>
+
+                <div id="done" style="visibility: hidden;">
+                    <p class="text-gradient">Thanks for subscribing!</p>
+                </div>
+
+            </div>
+            
+        </div>
     </div>
+
+    <script>
+
+        const subdone = ()=> {
+            got_mail = document.getElementById("mail").value 
+            if (got_mail) {
+                document.getElementById("done").style.visibility = "visible";
+                document.getElementById("subs").style.visibility = "hidden";
+            }
+        }
+        
+    </script>
+
 
 </body>
 </html>

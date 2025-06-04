@@ -1,7 +1,13 @@
 # Share-Sphere
 Sharesphere is a club-based e-commerce platform where users join exclusive clubs like Relic Seekers or Pearl Mint to access curated, members-only products. By paying to join, users become part of niche communities, enjoying personalized shopping, exclusivity, and a sense of shared experience.
 
-# Visit https://share-sphere-jade-97ql.onrender.com/
+
+# You are Invited!
+INVITATION CODE : 1221
+INVITATION ID : 1221 
+INVITER USERNAME : SS&CO
+
+## Visit https://share-sphere-jade-97ql.onrender.com/
 
 ## Features
 

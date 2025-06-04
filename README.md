@@ -3,9 +3,9 @@ Sharesphere is a club-based e-commerce platform where users join exclusive clubs
 
 
 # You are Invited!
-INVITATION CODE : 1221
-INVITATION ID : 1221 
-INVITER USERNAME : SS&CO
+- INVITATION CODE : 1221
+- INVITATION ID : 1221 
+- INVITER USERNAME : SS&CO
 
 ## Visit https://share-sphere-jade-97ql.onrender.com/
 
